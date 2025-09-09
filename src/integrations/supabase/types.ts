@@ -14,7 +14,143 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      courses: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration: string | null
+          id: string
+          image_emoji: string | null
+          level: string | null
+          popular: boolean | null
+          rating: number | null
+          students_count: number | null
+          technologies: string[] | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          image_emoji?: string | null
+          level?: string | null
+          popular?: boolean | null
+          rating?: number | null
+          students_count?: number | null
+          technologies?: string[] | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          image_emoji?: string | null
+          level?: string | null
+          popular?: boolean | null
+          rating?: number | null
+          students_count?: number | null
+          technologies?: string[] | null
+          title?: string
+        }
+        Relationships: []
+      }
+      live_events: {
+        Row: {
+          attendees_count: number | null
+          created_at: string
+          id: string
+          speaker: string | null
+          start_at: string
+          title: string
+          type: string | null
+        }
+        Insert: {
+          attendees_count?: number | null
+          created_at?: string
+          id?: string
+          speaker?: string | null
+          start_at: string
+          title: string
+          type?: string | null
+        }
+        Update: {
+          attendees_count?: number | null
+          created_at?: string
+          id?: string
+          speaker?: string | null
+          start_at?: string
+          title?: string
+          type?: string | null
+        }
+        Relationships: []
+      }
+      resource_categories: {
+        Row: {
+          color_key: string | null
+          created_at: string
+          icon_key: string | null
+          id: string
+          title: string
+        }
+        Insert: {
+          color_key?: string | null
+          created_at?: string
+          icon_key?: string | null
+          id?: string
+          title: string
+        }
+        Update: {
+          color_key?: string | null
+          created_at?: string
+          icon_key?: string | null
+          id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      resources: {
+        Row: {
+          category_id: string
+          created_at: string
+          downloads: number | null
+          id: string
+          link: string | null
+          name: string
+          recent: boolean | null
+          type: string | null
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          downloads?: number | null
+          id?: string
+          link?: string | null
+          name: string
+          recent?: boolean | null
+          type?: string | null
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          downloads?: number | null
+          id?: string
+          link?: string | null
+          name?: string
+          recent?: boolean | null
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "resource_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

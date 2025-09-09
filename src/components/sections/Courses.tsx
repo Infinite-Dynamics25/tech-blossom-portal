@@ -2,85 +2,39 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Star, PlayCircle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Courses = () => {
-  const courses = [
-    {
-      title: "Full-Stack Web Development",
-      description: "Master React, Node.js, and database technologies to build complete web applications.",
-      level: "Beginner",
-      duration: "12 weeks",
-      students: "2.5k",
-      rating: "4.9",
-      image: "🌐",
-      technologies: ["React", "Node.js", "MongoDB", "Express"],
-      popular: true
+  const { data: courses = [] } = useQuery({
+    queryKey: ["courses"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("courses")
+        .select(
+          "id, title, description, level, duration, students_count, rating, image_emoji, technologies, popular"
+        )
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
     },
-    {
-      title: "Machine Learning & AI",
-      description: "Learn Python, TensorFlow, and deep learning to build intelligent applications.",
-      level: "Intermediate",
-      duration: "16 weeks",
-      students: "1.8k",
-      rating: "4.8",
-      image: "🤖",
-      technologies: ["Python", "TensorFlow", "Keras", "Pandas"],
-      popular: false
-    },
-    {
-      title: "Cloud DevOps Engineering",
-      description: "Master AWS, Docker, Kubernetes, and CI/CD pipelines for modern deployment.",
-      level: "Advanced",
-      duration: "14 weeks",
-      students: "1.2k",
-      rating: "4.9",
-      image: "☁️",
-      technologies: ["AWS", "Docker", "Kubernetes", "Jenkins"],
-      popular: true
-    },
-    {
-      title: "Mobile App Development",
-      description: "Build cross-platform mobile apps with React Native and Flutter frameworks.",
-      level: "Intermediate",
-      duration: "10 weeks",
-      students: "2.1k",
-      rating: "4.7",
-      image: "📱",
-      technologies: ["React Native", "Flutter", "Firebase", "Redux"],
-      popular: false
-    },
-    {
-      title: "Cybersecurity Fundamentals",
-      description: "Learn ethical hacking, network security, and protection strategies.",
-      level: "Beginner",
-      duration: "8 weeks",
-      students: "1.5k",
-      rating: "4.8",
-      image: "🔒",
-      technologies: ["Kali Linux", "Wireshark", "Metasploit", "OWASP"],
-      popular: false
-    },
-    {
-      title: "Data Science & Analytics",
-      description: "Analyze big data using Python, R, and advanced statistical methods.",
-      level: "Intermediate",
-      duration: "12 weeks",
-      students: "1.9k",
-      rating: "4.9",
-      image: "📊",
-      technologies: ["Python", "R", "SQL", "Tableau"],
-      popular: true
-    }
-  ];
+  });
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case "Beginner": return "bg-success/20 text-success";
-      case "Intermediate": return "bg-warning/20 text-warning";
-      case "Advanced": return "bg-destructive/20 text-destructive";
-      default: return "bg-muted/20 text-muted-foreground";
+      case "Beginner":
+        return "bg-success/20 text-success";
+      case "Intermediate":
+        return "bg-warning/20 text-warning";
+      case "Advanced":
+        return "bg-destructive/20 text-destructive";
+      default:
+        return "bg-muted/20 text-muted-foreground";
     }
   };
+
+  const formatStudents = (n: number) =>
+    n >= 1000 ? `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k` : `${n}`;
 
   return (
     <section id="courses" className="py-20 bg-background-secondary">
@@ -104,7 +58,7 @@ const Courses = () => {
               )}
               
               <CardHeader className="relative">
-                <div className="text-6xl mb-4 text-center">{course.image}</div>
+                <div className="text-6xl mb-4 text-center">{course.image_emoji}</div>
                 <CardTitle className="text-xl mb-2">{course.title}</CardTitle>
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   {course.description}
@@ -121,11 +75,11 @@ const Courses = () => {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Users className="h-4 w-4 text-muted-foreground" />
-                      <span>{course.students}</span>
+                      <span>{formatStudents(course.students_count)}</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4 text-warning fill-current" />
-                      <span>{course.rating}</span>
+                      <span>{Number(course.rating).toFixed(1)}</span>
                     </div>
                   </div>
                 </div>
