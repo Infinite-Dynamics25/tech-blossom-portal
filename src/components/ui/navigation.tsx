@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { BookOpen, Users, Trophy, MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Navigation = () => {
+  const navigate = useNavigate();
+
   return (
     <nav className="fixed top-0 w-full z-50 glass border-b border-border">
       <div className="container mx-auto px-6 py-4">
@@ -55,10 +58,19 @@ const Navigation = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => navigate("/auth")}
+            >
               Sign In
             </Button>
-            <Button variant="default" size="sm" className="gradient-primary">
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="gradient-primary"
+              onClick={() => navigate("/auth")}
+            >
               Get Started
             </Button>
           </div>
