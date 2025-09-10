@@ -27,7 +27,7 @@ const Hero = () => {
           {/* Main heading */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Master Tech Skills with
-            <span className="block text-gradient">AI-Powered Learning</span>
+            <span className="block text-gradient">Infinite Tech Learning</span>
           </h1>
           
           {/* Subtitle */}
